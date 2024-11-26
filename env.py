@@ -616,9 +616,18 @@ class EventTable:
         self.warehouse.status_event_table.add_event(max(event_time_step, time_step), ('R', rack))
 
 
-algorithm_combination_COOP = [BundlingAlgorithm.HYBRID, MatchingAlgorithm.DQN,
+algorithm_combination_1 = [BundlingAlgorithm.DISABLE, MatchingAlgorithm.SIMPLE,
+                             RackGroupAlgorithm.RANDOM, PathFindingAlgorithm.A_STAR]
+algorithm_combination_2 = [BundlingAlgorithm.REVERSE, MatchingAlgorithm.GREEDY_TOP_K,
+                             RackGroupAlgorithm.RANDOM, PathFindingAlgorithm.A_STAR]
+algorithm_combination_3 = [BundlingAlgorithm.DISABLE, MatchingAlgorithm.GREEDY,
+                              RackGroupAlgorithm.RANDOM, PathFindingAlgorithm.A_STAR]
+algorithm_combination_4 = [BundlingAlgorithm.HYBRID, MatchingAlgorithm.HNSW_TOP_K,
+                             RackGroupAlgorithm.RANDOM, PathFindingAlgorithm.P3F]
+algorithm_combination_5 = [BundlingAlgorithm.HYBRID, MatchingAlgorithm.DQN,
                               RackGroupAlgorithm.GREEDY, PathFindingAlgorithm.P3F]
-algorithm_combinations = [algorithm_combination_COOP]
+algorithm_combinations = [algorithm_combination_1, algorithm_combination_2, algorithm_combination_3,
+                          algorithm_combination_4, algorithm_combination_5]
 order_files_A = ["orders_A100K.txt","orders_A200K.txt",
                  "orders_A400K.txt", "orders_A700K.txt", "orders_A1000K.txt"]
 experimental_setting_A = ("warehouse_layout_RealA.txt", order_files_A, 503, 101)

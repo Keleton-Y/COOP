@@ -148,13 +148,11 @@ def a_star_progressive(grid, start, goal, collision_index=None, start_time=0, d=
         nodes_expanded += 1
 
         if nodes_expanded > node_limit:
-            print(f"无解，已访问 {nodes_expanded} 个节点，超过节点上限 {node_limit:.0f}。")
             return []
 
         distance_to_goal = manhattan_distance(current_position, goal)
 
         if distance_to_goal <= d:
-            print(f"到达距离终点 {d} 个曼哈顿距离处，搜索了 {nodes_expanded} 个节点。")
             return reconstruct_path(current_node)
 
         if (current_position, current_time_step) in closed_set:
@@ -183,8 +181,6 @@ def a_star_progressive(grid, start, goal, collision_index=None, start_time=0, d=
                                   parent=current_node)
 
             heapq.heappush(open_set, next_node)
-
-    print(f"未找到路径，搜索了 {nodes_expanded} 个节点。")
     return []
 
 
@@ -230,9 +226,6 @@ def mapf(grid, robot_starts, robot_goals, current_time, collision_index):
 
                 paths[robot_index].extend(partial_path)
                 collision_index.update([partial_path])
-            else:
-                print(f"机器人 {robot_index} 无法找到部分路径")
-
         d = calculate_next_d(d)
 
     priority_sequence = generate_random_priority_sequence(num_robots)
@@ -246,9 +239,6 @@ def mapf(grid, robot_starts, robot_goals, current_time, collision_index):
             if final_path:
                 paths[robot_index].extend(final_path)
                 collision_index.update([final_path])
-            else:
-                print(f"机器人 {robot_index} 无法找到最终路径")
-
     return paths
 
 
@@ -271,15 +261,11 @@ def generate_random_positions(grid, num_robots):
 
 
 def online_task_planning(grid, start, goal, collision_index, current_time_step):
-    print(f"开始在线规划任务，当前时间步为 {current_time_step}，规划从时间步 {current_time_step} 开始。")
     path = a_star(grid, start, goal, collision_index, start_time=current_time_step)
-
     if path:
-        print(f"任务成功规划，更新路径。")
         collision_index.update([path])  
         return path
     else:
-        print("任务规划失败，无法找到无碰撞路径。")
         return []
 
 
@@ -295,7 +281,6 @@ def plan_paths(grid, robot_starts, robot_goals):
             paths.append(path)
             collision_index.update([path])  
         else:
-            print(f"未能为机器人 {i} 规划从 {start} 到达 {goal} 的路径")
             paths.append([])
             continue
 
@@ -343,7 +328,6 @@ def a_star_segment(grid, start, goal, target_distance, collision_index=None, sta
             next_node = AStarNode(position=next_position, time_step=next_time_step, cost=new_cost, heuristic=heuristic, parent=current_node)
             heapq.heappush(open_set, next_node)
 
-    print(f"未找到中继点，搜索了 {nodes_expanded} 个节点。起点： {start}， 终点： {goal}")
     return [], start, start_time  
 
 
@@ -359,7 +343,6 @@ def progressive_a_star(grid, start, goal, collision_index=None, start_time=0):
             grid, current_start, goal, target_distance, collision_index, current_time
         )
         if not path_segment:
-            print("未能找到完整路径。")
             return []
         total_path.extend(path_segment[:-1])  
 

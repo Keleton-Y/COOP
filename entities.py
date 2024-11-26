@@ -36,9 +36,9 @@ class Order:
 
     def show_items_needed(self):
         if not self.items_needed:
-            print("该订单不需要任何商品。")
+            print("This order needs no item.")
         else:
-            print(f"订单 {self.id} 需要的商品:")
+            print(f"Order {self.id} needs items:")
             for item, quantity in self.items_needed.items():
                 print(f"  - {item}: {quantity}")
 

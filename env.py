@@ -53,7 +53,7 @@ class Warehouse:
                 isinstance(algorithm[1], MatchingAlgorithm) and
                 isinstance(algorithm[2], RackGroupAlgorithm) and
                 isinstance(algorithm[3], PathFindingAlgorithm)):
-            raise ValueError("algorithm 参数的各项必须是相应的枚举类成员")
+            raise ValueError("The parameters of the algorithm must be corresponding members of the respective enumeration class.")
 
         self.picking_time = 0.75
         self.finished_orders = 0
@@ -133,10 +133,10 @@ class Warehouse:
         elapsed_time = end_time - start_time  
         if not self.print_event:
             print(
-                f"\r当前时间步: {self.current_time_step} | 完成进度: {self.finished_orders / self.total_orders * 100:.2f}%"
+                f"\r Current Time Step: {self.current_time_step} | Completion progress: {self.finished_orders / self.total_orders * 100:.2f}%"
                 , end="")
-        print(f"\n运行结束，总时间步: {self.current_time_step}")
-        print(f"运行时长: {elapsed_time:.2f} 秒")
+        print(f"\n Finished, Total time steps: {self.current_time_step}")
+        print(f"Running time: {elapsed_time:.2f} seconds")
 
     def increment_time(self):
         self.current_time_step += 1

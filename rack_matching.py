@@ -185,74 +185,6 @@ def calculate_weighted_shelves_from_table(rack_list, weighted_table):
         weighted_shelves.append(weighted_shelf)
     return weighted_shelves
 
-
-
-def generate_test_environment():
-    products = [f"product_{i}" for i in range(1, 11)]
-    shelves = []
-    for _ in range(50):
-        num_products = random.randint(2, 6)  
-        selected_products = random.sample(products, num_products)  
-        shelf = {}
-        remaining_capacity = 30
-        for i, product in enumerate(selected_products):
-            if i == len(selected_products) - 1:
-                quantity = remaining_capacity
-            else:
-                max_quantity = remaining_capacity - (len(selected_products) - i - 1)
-                quantity = random.randint(1, max_quantity)
-            shelf[product] = quantity
-            remaining_capacity -= quantity
-        shelves.append(shelf)
-    
-    orders = []
-    for _ in range(50):
-        order = {}
-        num_order_products = random.randint(2, 5)  
-        selected_order_products = random.sample(products, num_order_products)
-        remaining_order_quantity = 12
-        for i, product in enumerate(selected_order_products):
-            if i == len(selected_order_products) - 1:
-                quantity = remaining_order_quantity
-            else:
-                max_quantity = remaining_order_quantity - (len(selected_order_products) - i - 1)
-                quantity = random.randint(1, max_quantity)
-            order[product] = quantity
-            remaining_order_quantity -= quantity
-        orders.append(order)
-    
-    N_max = 12
-    weighted_table = build_weighted_table(orders, N_max)
-    
-    for i, shelf in enumerate(shelves):
-        weighted_shelf = calculate_weighted_shelf_from_table(shelf, weighted_table)
-        print(f"货架 {i} 加权后的货架向量: {weighted_shelf}")
-    
-    query_order = random.choice(orders)
-    
-    print("\n随机抽取的订单需求:")
-    for product, quantity in query_order.items():
-        print(f"{product}: {quantity}")
-    
-    selected_shelves, shelf_contributions = greedy_select_racks(shelves, query_order)
-    
-    print("\n使用到的货架组合:")
-    for shelf_idx in sorted(selected_shelves):
-        print(f"货架 {shelf_idx}: {shelves[shelf_idx]}")
-    
-    print("\n每个货架的贡献:")
-    for shelf_idx, contribution in shelf_contributions.items():
-        print(f"货架 {shelf_idx} 贡献: {contribution}")
-
-
-def generate_random_vectors(n_vectors, dimension):
-    return np.random.randint(2, size=(n_vectors, dimension))
-
-
-def generate_query_vector(dimension):
-    return np.random.randint(10, size=dimension)
-
-
 class LSH:
     def __init__(self, n_hashes, dimension):
         self.n_hashes = n_hashes
@@ -311,7 +243,7 @@ class WeightedRackSearch:
 
 class WeightedRackSearchHNSW:
     def __init__(self, weighted_racks, rack_list, ef=200, M=16):
-        assert len(weighted_racks) == len(rack_list), "weighted_racks 和 rack_list 的长度必须相同"
+        assert len(weighted_racks) == len(rack_list), "weighted_racks and rack_list must have the same length."
 
         self.all_products = set()
         for rack in weighted_racks:
